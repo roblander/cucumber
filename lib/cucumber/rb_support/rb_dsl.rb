@@ -77,6 +77,15 @@ module Cucumber
         RbDsl.register_rb_hook('after_step', tag_expressions, proc)
       end
 
+      # Registers a proc that will be wrapped around each step. The proc
+      # should accept two arguments: two arguments: the scenario and a "block"
+      # argument (but passed as a regular argument, since blocks cannot accept
+      # blocks in 1.8), on which it should call the .call method. You can register
+      # as many  as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
+      def AroundStep(*tag_expressions, &proc)
+        RbDsl.register_rb_hook('around_step', tag_expressions, proc)
+      end
+
       # Registers a proc that will be called with a step definition argument if it
       # matches the pattern passed as the first argument to Transform. Alternatively, if
       # the pattern contains captures then they will be yielded as arguments to the

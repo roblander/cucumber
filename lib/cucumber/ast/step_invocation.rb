@@ -57,8 +57,10 @@ module Cucumber
         unless @skip_invoke || configuration.dry_run? || @exception || @step_collection.exception
           @skip_invoke = true
           begin
-            @step_match.invoke(@multiline_arg)
-            runtime.after_step
+            # Running step hooks
+            runtime.with_step_hooks do
+              @step_match.invoke(@multiline_arg)
+            end
             status!(:passed)
           rescue Pending => e
             failed(configuration, e, false)

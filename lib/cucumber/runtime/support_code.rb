@@ -123,6 +123,16 @@ module Cucumber
         end.call
       end
 
+      def around_step(scenario, block)
+        @programming_languages.reverse.inject(block) do |blk, programming_language|
+          proc do
+            programming_language.around_step(scenario) do
+              blk.call(scenario)
+            end
+          end
+        end.call
+      end
+
       def step_definitions
         @programming_languages.map do |programming_language|
           programming_language.step_definitions

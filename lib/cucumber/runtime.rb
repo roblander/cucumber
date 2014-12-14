@@ -101,6 +101,31 @@ module Cucumber
       @results.scenario_visited(scenario)
     end
 
+    # new
+    def with_step_hooks(skip_hooks=false)
+      around_step(skip_hooks) do
+        before_and_after_step(skip_hooks) do
+          yield
+        end
+      end
+    end
+
+    # new
+    def around_step(skip_hooks=false, &block) #:nodoc:
+      if skip_hooks
+        yield
+        return
+      end
+
+      @support_code.around_step(@current_scenario, block)
+    end
+
+    # new
+    def before_and_after_step(skip_hooks=false) #:nodoc:
+      yield
+      after_step unless skip_hooks
+    end
+
     def before(scenario) #:nodoc:
       return if @configuration.dry_run? || @current_scenario
       @current_scenario = scenario

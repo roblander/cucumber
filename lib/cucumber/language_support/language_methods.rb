@@ -10,6 +10,12 @@ module Cucumber
         end
       end
 
+      def around_step(scenario)
+        execute_around_step(scenario) do
+          yield
+        end
+      end
+
       def before(scenario)
         begin_scenario(scenario)
         execute_before(scenario)
@@ -91,6 +97,16 @@ module Cucumber
         hooks_for(:around, scenario).reverse.inject(block) do |blk, hook|
           proc do
             invoke(hook, 'Around', scenario, true) do
+              blk.call(scenario)
+            end
+          end
+        end.call
+      end
+
+      def execute_around_step(scenario, &block)
+        hooks_for(:around_step, scenario).reverse.inject(block) do |blk, hook|
+          proc do
+            invoke(hook, 'AroundStep', scenario, false) do
               blk.call(scenario)
             end
           end
