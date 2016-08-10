@@ -131,6 +131,16 @@ module Cucumber
         end
       end
 
+      def find_around_step_hooks(test_case)
+        scenario = RunningTestCase.new(test_case)
+
+        @ruby.hooks_for(:around_step, scenario).map do |hook|
+          Hooks.around_step_hook(test_case.source) do |run_scenario|
+            hook.invoke('AroundStep', scenario, &run_scenario)
+          end
+        end
+      end
+
       private
 
       def step_matches(step_name)

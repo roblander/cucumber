@@ -1,6 +1,7 @@
 require 'pathname'
 require 'cucumber/core/ast/location'
 require 'cucumber/core/test/around_hook'
+require 'cucumber/core/test/around_step_hook'
 
 module Cucumber
 
@@ -24,6 +25,10 @@ module Cucumber
 
       def around_hook(source, &block)
         Core::Test::AroundHook.new(&block)
+      end
+
+      def around_step_hook(source, &block)
+        Core::Test::AroundStepHook.new(&block)
       end
 
       private

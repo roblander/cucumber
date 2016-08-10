@@ -242,6 +242,7 @@ module Cucumber
           filters << Filters::ApplyBeforeHooks.new(@support_code)
           filters << Filters::ApplyAfterHooks.new(@support_code)
           filters << Filters::ApplyAroundHooks.new(@support_code)
+          filters << Filters::ApplyAroundStepHooks.new(@support_code)
           # need to do this last so it becomes the first test step
           filters << Filters::PrepareWorld.new(self)
         end
