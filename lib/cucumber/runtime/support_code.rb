@@ -135,8 +135,8 @@ module Cucumber
         scenario = RunningTestCase.new(test_case)
 
         @ruby.hooks_for(:around_step, scenario).map do |hook|
-          Hooks.around_step_hook(test_case.source) do |run_scenario|
-            hook.invoke('AroundStep', scenario, &run_scenario)
+          Core::Test::AroundStepHook.new do |*args, block|
+            hook.invoke('AroundStep', args, &block)
           end
         end
       end
